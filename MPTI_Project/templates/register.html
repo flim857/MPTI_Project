@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .form-container {
+            background: rgba(30, 30, 46, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            width: 450px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #ffd700;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(20, 20, 35, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        .btn-register {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            width: 100%;
+            color: #1a1a2e;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .login-link a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        .alert {
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+        }
+        small {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Добро пожаловать!</h2>
+        <div class="subtitle">Создайте новый аккаунт</div>
+
+        {% if error %}
+        <div class="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Имя пользователя</label>
+                <input type="text" name="username" required minlength="3" maxlength="50" pattern="[A-Za-zА-Яа-я0-9_]+">
+                <small>От 3 до 50 символов, только буквы, цифры и _</small>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" required maxlength="100">
+            </div>
+
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" name="password" required minlength="6" maxlength="100">
+                <small>Не менее 6 символов</small>
+            </div>
+
+            <div class="form-group">
+                <label>Подтвердите пароль</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+
+            <button type="submit" class="btn-register">Зарегистрироваться</button>
+        </form>
+
+        <div class="login-link">
+            Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a>
+        </div>
+    </div>
+</body>
+</html>

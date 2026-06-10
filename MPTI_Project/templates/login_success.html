@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .success-container {
+            background: rgba(30, 30, 46, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-width: 500px;
+        }
+        h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        p {
+            color: white;
+            margin-bottom: 30px;
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: none;
+            padding: 12px 30px;
+            color: #1a1a2e;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <h2>Регистрация успешна!</h2>
+        <p>Теперь вы можете войти в систему, используя свои данные.</p>
+        <a href="{{ url_for('login') }}" class="btn-login">Перейти к входу →</a>
+    </div>
+</body>
+</html>

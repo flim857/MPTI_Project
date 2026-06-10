@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Навигация */
+        .navbar {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-brand {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .user-welcome {
+            color: #ffd700;
+            padding: 8px 15px;
+        }
+
+        /* Сетка товаров */
+        .products-section {
+            padding: 60px 0;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(30, 30, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .card-img-top {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            background: linear-gradient(135deg, #2a2a3e, #1a1a2e);
+        }
+
+        .card-body {
+            padding: 20px;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+
+        .warranty {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-order {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: none;
+            color: #1a1a2e;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: none;
+            padding: 10px 20px;
+            color: #1a1a2e;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* Сообщения */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border-left: 5px solid #ff4444;
+        }
+
+        .alert-success {
+            background: rgba(6, 214, 160, 0.9);
+            color: white;
+            border-left: 5px solid #06d6a0;
+        }
+
+        .alert-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        /* Футер */
+        .footer {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 60px;
+        }
+
+        button {
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-flex">
+                <a href="{{ url_for('index') }}" class="navbar-brand">FlimShop</a>
+                <div class="nav-links">
+                    <a href="{{ url_for('index') }}">Главная</a>
+                    <a href="{{ url_for('feedback') }}">Обратная связь</a>
+                    <a href="{{ url_for('contacts') }}" class="btn btn-info me-2">
+                    <i class="fas fa-phone-alt"></i> Контакты</a>
+                    <a href="{{ url_for('view_cart') }}">Корзина</a>
+                    {% if user_id %}
+                    <span class="user-welcome">Добро пожаловать!</span>
+                    <a href="{{ url_for('dashboard') }}">Личный кабинет</a>
+                    <a href="{{ url_for('logout') }}">Выйти</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}">Вход</a>
+                    <a href="{{ url_for('register') }}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {% if request.args.get('error') %}
+    <div class="container" style="margin-top: 20px;">
+        <div class="alert alert-danger">
+            {{ request.args.get('error') }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if request.args.get('success') %}
+    <div class="container" style="margin-top: 20px;">
+        <div class="alert alert-success">
+            {{ request.args.get('success') }}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="products-section">
+        <div class="container">
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="card">
+                    <div class="card-img-top">
+                        {% if product.category == 'мыши' %}
+                        🖱️
+                        {% elif product.category == 'клавиатуры' %}
+                        ⌨️
+                        {% elif product.category == 'фены' %}
+                        💨
+                        {% else %}
+                        📦
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <div class="price">{{ product.price }} ₽</div>
+                        <div class="warranty">Гарантия: {{ product.warranty }} мес.</div>
+                        <div class="description">{{ product.description }}</div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <form method="POST" action="{{ url_for('add_to_cart_route', product_id=product.id) }}" style="flex: 1;">
+                            <button type="submit" class="btn-order" style="background: linear-gradient(135deg, #2196F3, #1976D2);">В корзину</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('order_product', product_id=product.id) }}" style="flex: 1;">
+                            <button type="submit" class="btn-order">Купить сразу</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

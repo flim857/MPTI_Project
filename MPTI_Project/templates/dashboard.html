@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .dashboard-container {
+            background: rgba(30, 30, 46, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .info-card, .orders-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        .info-card p {
+            margin: 8px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        th {
+            color: #ffd700;
+        }
+        .badge {
+            background: #0077b6;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            border: none;
+            padding: 12px 25px;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            border: none;
+            padding: 12px 25px;
+            color: #1a1a2e;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+            padding: 12px 25px;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .text-muted {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Пагинация */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0 20px;
+            flex-wrap: wrap;
+        }
+        .page-link {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .page-link:hover {
+            background: rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+        }
+        .page-current {
+            background: #ffd700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+        .page-info {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            th {
+                display: none;
+            }
+            td {
+                padding: 10px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #ffd700;
+                display: inline-block;
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Добро пожаловать, {{ user.username }}!</h1>
+
+        <div class="info-card">
+            <h3>Информация о профиле</h3>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Дата регистрации:</strong> {{ user.created_at }}</p>
+        </div>
+
+        <div class="orders-card">
+            <h3>История заказов (всего: {{ total_orders }})</h3>
+            {% if orders %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>№ заказа</th>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Дата</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td data-label="№ заказа">#{{ order.id }}</td>
+                        <td data-label="Товар">{{ order.product_name }}</td>
+                        <td data-label="Цена">{{ order.product_price }} ₽</td>
+                        <td data-label="Дата">{{ order.order_date[:19] }}</td>
+                        <td data-label="Статус"><span class="badge">{{ order.status }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if total_pages > 1 %}
+            <div class="pagination">
+                {% if current_page > 1 %}
+                <a href="{{ url_for('dashboard', page_num=current_page-1) }}" class="page-link">← Назад</a>
+                {% else %}
+                <span class="page-link" style="opacity: 0.5; cursor: not-allowed;">← Назад</span>
+                {% endif %}
+
+                {% for p in range(1, total_pages + 1) %}
+                    {% if p == current_page %}
+                    <span class="page-current">{{ p }}</span>
+                    {% else %}
+                    <a href="{{ url_for('dashboard', page_num=p) }}" class="page-link">{{ p }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if current_page < total_pages %}
+                <a href="{{ url_for('dashboard', page_num=current_page+1) }}" class="page-link">Вперед →</a>
+                {% else %}
+                <span class="page-link" style="opacity: 0.5; cursor: not-allowed;">Вперед →</span>
+                {% endif %}
+            </div>
+            <div class="page-info">
+                Страница {{ current_page }} из {{ total_pages }}
+            </div>
+            {% endif %}
+
+            {% else %}
+            <p class="text-muted">У вас нет заказов. Перейдите в магазин, чтобы сделать первый заказ!</p>
+            {% endif %}
+        </div>
+
+        <div class="btn-group">
+            <a href="{{ url_for('index') }}" class="btn-primary">В магазин</a>
+            <a href="{{ url_for('profile') }}" class="btn-warning">✏Редактировать профиль</a>
+            <a href="{{ url_for('logout') }}" class="btn-danger">Выйти</a>
+        </div>
+    </div>
+</body>
+</html>
