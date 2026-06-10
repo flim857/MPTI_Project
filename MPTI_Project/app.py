@@ -341,7 +341,7 @@ def login():
 def login_success():
     return render_template('login_success.html')
 
-
+#Личный кабинет
 @app.route('/dashboard')
 @app.route('/dashboard/page/<int:page_num>')
 def dashboard(page_num=1):
@@ -355,20 +355,17 @@ def dashboard(page_num=1):
     conn = get_db_connection()
     user = conn.execute('SELECT * FROM users WHERE id = ?', (user_id,)).fetchone()
 
-    #Получаем общее количество заказов пользователя
     total_orders = conn.execute('SELECT COUNT(*) FROM orders WHERE user_id = ?', (user_id,)).fetchone()[0]
     total_pages = (total_orders + per_page - 1) // per_page
     if total_pages == 0:
         total_pages = 1
 
-    #Проверяем корректность номера страницы
     if page_num < 1:
         page_num = 1
     elif page_num > total_pages:
         page_num = total_pages
         offset = (page_num - 1) * per_page
 
-    #Получаем заказы с пагинацией и правильной сортировкой
     orders = conn.execute('''
         SELECT * FROM orders 
         WHERE user_id = ? 
@@ -389,13 +386,14 @@ def dashboard(page_num=1):
                            total_pages=total_pages,
                            total_orders=total_orders)
 
-
+#Выйти из аккаунта
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
 
+#редактирование профиля
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if 'user_id' not in session:
@@ -423,7 +421,7 @@ def profile():
     return render_template('profile.html', user=user, error=None)
 
 
-# Контакты
+#Контакты
 @app.route('/contacts')
 def contacts():
     contacts_info = {
@@ -438,6 +436,7 @@ def contacts():
     return render_template('contacts.html', contacts=contacts_info)
 
 
+#Корзина
 @app.route('/cart')
 def view_cart():
     if 'user_id' not in session:
@@ -449,6 +448,7 @@ def view_cart():
     return render_template('cart.html', cart_items=cart_items, total=total)
 
 
+#Добавление товара в корзину
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
 def add_to_cart_route(product_id):
     if 'user_id' not in session:
@@ -463,7 +463,7 @@ def add_to_cart_route(product_id):
     else:
         return redirect(url_for('index'))
 
-
+#Увелесение количества одного товара
 @app.route('/update_cart/<int:cart_id>', methods=['POST'])
 def update_cart_route(cart_id):
     if 'user_id' not in session:
@@ -482,6 +482,7 @@ def update_cart_route(cart_id):
     return redirect(url_for('view_cart'))
 
 
+#Удаление товара из корзины
 @app.route('/remove_from_cart/<int:cart_id>')
 def remove_from_cart_route(cart_id):
     if 'user_id' not in session:
@@ -495,6 +496,7 @@ def remove_from_cart_route(cart_id):
     return redirect(url_for('view_cart'))
 
 
+#Для оформления заказа из корзины
 @app.route('/checkout', methods=['POST'])
 def checkout():
     if 'user_id' not in session:
@@ -508,10 +510,12 @@ def checkout():
         WHERE c.user_id = ?
     ''', (session['user_id'],)).fetchall()
 
+    #Ошибочка
     if not cart_items:
         conn.close()
         return redirect(url_for('view_cart', error='Корзина пуста'))
 
+    #Покупает все товары из корзины 
     for item in cart_items:
         for i in range(item['quantity']):
             conn.execute('''
